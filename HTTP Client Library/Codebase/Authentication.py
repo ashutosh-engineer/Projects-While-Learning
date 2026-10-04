@@ -6,13 +6,15 @@ class Authenticate:
     def validation_logic(self , name  : str, password : int):
         if name not in self.register:
             return "Usernam is Aceepted"
-            return 1
+            return True
+        # True is 1 only
 
 
     def register_user(self , name : str , password : int ):
         if name not in self.register:
             self.register[name] = password
             return "User registered Sucesfully"
+            return True
 
 
 
@@ -27,9 +29,11 @@ class login(Authenticate):
             print("User is already registered")
             return True
 
-    def login(self, name, password):
+    def logined(self, name, password):
         if self.Check_is_registered(name):
             if self.register[name] == password:
                 print("Login Sucessfully ")
+                return True
             else:
                 print("Password or name wrong")
+                return False
