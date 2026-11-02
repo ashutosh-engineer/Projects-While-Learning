@@ -1,4 +1,4 @@
-from flask import Blueprint , jsonify
+from flask import Blueprint , jsonify , request
 
 post_bp= Blueprint("user" , __name__)
 
@@ -10,6 +10,41 @@ posts=[
         "category": "python" 
     }
 ]
+
+@post_bp.route("/" , methods= ["POST"])
+def post() ->dict:
+    data=request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return {"error" : "Valid json object needed"}, 400
+    
+    new_id=len(posts)+1
+    title=data.get("title")
+    content=data.get("content")
+    category=data.get("category")
+
+    if id is None:
+        return{"error" : "id not generated"}, 400
+    if title is None:
+        return {"error" : "title is Required"}, 400
+
+    if content is None:
+        return {"error" : "Content is Required for posts"}, 400
+
+    if category is None:
+        return {"error" : "Category is needed to register the post"}, 400
+
+    # Append the post in the list
+    new_post= {
+        "id" : id,
+        "title" : title,
+        "content" : content,
+        "category" : category
+    }
+
+    posts.append(new_post)
+    return jsonify(new_post), 201
+
+
 
 @post_bp.route("/" , methods=["GET"])
 def show_post():
