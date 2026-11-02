@@ -11,34 +11,34 @@ posts=[
     }
 ]
 
-@post_bp.route("/posts" , methods=["GET"])
+@post_bp.route("/" , methods=["GET"])
 def show_post():
     if posts:
         return jsonify(posts), 200
 
-    return jsonify({"Error " : "No post found"}), 404
+    return jsonify({"error " : "No post found"}), 404
 
 
-@post_bp.route("/post/<int:id>" , methods= ["GET"])
-def specific_post(id):
+@post_bp.route("/<int:post_id>" , methods= ["GET"])
+def specific_post(post_id):
     for post in posts:
-        if post["id"] == id:
-            return jsonify({posts}), 200
+        if post["id"] == post_id:
+            return jsonify(post), 200
 
-    return jsonify({"Error" : "Post not found"}), 404
+    return jsonify({"error" : "Post not found"}), 404
 
 
-@post_bp.route("/filter/<category_name>" , methods=["GET"])
-def filter(category_name):
+@post_bp.route("/category/<category_name>" , methods=["GET"])
+def filter_posts(category_name):
     result=[]
     for pos in posts:
         if pos["category"] == category_name:
             result.append(pos)
 
-        if result:
-            return jsonify(result),200
+    if result:
+        return jsonify(result),200
 
-    return jsonify({"Error" : "Unmatching Details"})
+    return jsonify({"error" : "Post not found"}) , 404
 
 
 
