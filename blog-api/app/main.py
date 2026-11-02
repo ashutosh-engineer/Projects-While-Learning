@@ -1,9 +1,9 @@
 from flask import Flask
 
+app=Flask(__name__)
 
 def create_app(config_name = "Developement"):
     app=Flask(__name__)
-
     from routes.posts import post_bp
     from routes.auth import auth_bp
     from routes.comments import coment_bp
