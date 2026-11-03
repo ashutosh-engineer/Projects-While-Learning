@@ -129,19 +129,41 @@ def change_partially(post_id):
 #Read with URL Querry parameter
 @post_bp.route("/" , methods=["GET"])
 def show_post():
-    category=request.args.get("category")
+    page = request.args.get("page", default=1, type=int)
+    limit = request.args.get("limit", default=10, type=int)
+    category = request.args.get("category")
+
+    if page is None or page < 1:
+        return {"error": "page must be a positive integer"}, 400
+
+    if limit is None or limit < 1:
+        return {"error": "limit must be a positive integer"}, 400
 
     if category is None:
-        return jsonify(posts), 200
+        filtered_posts = posts
+    else:
+        filtered_posts = [
+            post for post in posts
+            if post["category"] == category
+        ]
 
-    result=[]
+    total = len(filtered_posts)
+    start = (page - 1) * limit
+    end = start + limit
+    paginated_posts = filtered_posts[start:end]
 
-    for post in posts:
-        if post["category"] == category:
-            result.append(post)
-            return jsonify(result), 200
+    if not paginated_posts:
+        return {"error": "No posts found"}, 404
 
-    return jsonify({"error " : "No post found"}), 404
+    total_pages = (total + limit - 1) // limit
+
+    return jsonify({
+        "posts": paginated_posts,
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "total_pages": total_pages
+    }), 200
 
 
 @post_bp.route("/<int:post_id>" , methods= ["GET"])
@@ -182,6 +204,5 @@ def delete(post_id):
 
 
     
-
 
 
