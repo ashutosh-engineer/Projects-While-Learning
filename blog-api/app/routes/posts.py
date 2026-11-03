@@ -102,11 +102,20 @@ def change_partially(post_id):
 
     return {"error": "Post not found"}, 404
 
-
+#Read with URL Querry parameter
 @post_bp.route("/" , methods=["GET"])
 def show_post():
-    if posts:
+    category=request.args.get("category")
+
+    if category is None:
         return jsonify(posts), 200
+
+    result=[]
+
+    for post in posts:
+        if post["category"] == category:
+            result.append(post)
+            return jsonify(result), 200
 
     return jsonify({"error " : "No post found"}), 404
 
