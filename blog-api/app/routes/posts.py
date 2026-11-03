@@ -135,16 +135,16 @@ def filter_posts(category_name):
 
 
 #To delete the post
-@post_bp.route("/<post_id>", methods=["DELETE"])
+@post_bp.route("/<int:post_id>", methods=["DELETE"])
 def delete(post_id):
     for post in posts:
         if post["id"] == post_id:
             posts.remove(post)
 
-        return jsonify({"Message" : "Sucessfully removed"}), 204
+            return jsonify({"Message" : "Sucessfully removed"}), 204
 
 
-    return jsonify({"Error" : "Post not found"})
+    return jsonify({"Error" : "Post not found"}), 404
 
 
 
