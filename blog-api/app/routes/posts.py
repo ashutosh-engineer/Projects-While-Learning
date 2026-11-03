@@ -1,6 +1,6 @@
 from flask import Blueprint , jsonify , request
 
-post_bp= Blueprint("user" , __name__)
+post_bp= Blueprint("posts" , __name__)
 
 posts=[
     {
@@ -22,8 +22,6 @@ def post() ->dict:
     content=data.get("content")
     category=data.get("category")
 
-    if new_id is None:
-        return{"error" : "id not generated"}, 400
     if title is None:
         return {"error" : "title is Required"}, 400
 
@@ -47,6 +45,7 @@ def post() ->dict:
 @post_bp.route("/<int:post_id>" , methods=["PUT"])
 def change_content(post_id):
     data=request.get_json(silent= True)
+
     if not isinstance(data, dict):
         return {"error" : "Invalid data object not Json"},400
 
@@ -141,7 +140,7 @@ def delete(post_id):
         if post["id"] == post_id:
             posts.remove(post)
 
-            return jsonify({"Message" : "Sucessfully removed"}), 204
+            return "", 204
 
 
     return jsonify({"Error" : "Post not found"}), 404

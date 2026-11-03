@@ -1,14 +1,14 @@
 from flask import Blueprint
 
-coment_bp=Blueprint("Commnets" , __name__)
+comments_bp=Blueprint("commnets" , __name__)
 
 
-@coment_bp.route("/Comments")
+@comments_bp.route("/Comments")
 def  all_listed_comments():
     return "This all Listed comments"
 
 
-@coment_bp.route("/make_coment")
+@comments_bp.route("/")
 def make_coment():
     pass
 
