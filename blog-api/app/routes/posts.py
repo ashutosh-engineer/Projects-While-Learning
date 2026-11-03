@@ -8,6 +8,30 @@ posts=[
         "title": "Learning Flask",
         "content": "My first Flask post",
         "category": "python" 
+    },
+    {
+        "id": 2,
+        "title": "Understanding Flask Routing",
+        "content": "Routes connect URLs and HTTP methods to Python functions.",
+        "category": "flask"
+    },
+    {
+        "id": 3,
+        "title": "Working with JSON",
+        "content": "JSON is commonly used to exchange data with REST APIs.",
+        "category": "api"
+    },
+    {
+        "id": 4,
+        "title": "HTTP Status Codes",
+        "content": "Status codes communicate the result of an HTTP request.",
+        "category": "web"
+    },
+    {
+        "id": 5,
+        "title": "Building CRUD APIs",
+        "content": "CRUD represents create, read, update, and delete operations.",
+        "category": "api"
     }
 ]
 
@@ -158,7 +182,6 @@ def delete(post_id):
 
 
     
-
 
 
 
