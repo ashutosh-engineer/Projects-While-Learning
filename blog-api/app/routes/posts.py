@@ -134,6 +134,19 @@ def filter_posts(category_name):
     return jsonify({"error" : "Post not found"}) , 404
 
 
+#To delete the post
+@post_bp.route("/<post_id>", methods=["DELETE"])
+def delete(post_id):
+    for post in posts:
+        if post["id"] == post_id:
+            posts.remove(post)
+
+        return jsonify({"Message" : "Sucessfully removed"}), 204
+
+
+    return jsonify({"Error" : "Post not found"})
+
+
 
 
     
