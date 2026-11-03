@@ -3,12 +3,11 @@ from flask import Blueprint
 auth_bp= Blueprint("Authentication" , __name__)
 
 
-@auth_bp.route("/authentication" , method= ["GET" , "POST"])
+@auth_bp.route("/authentication", methods=["GET", "POST"])
 def authenticate_user():
     pass
 
 
-@auth_bp.route("Authorization" , method=["GET" , "POST"])
-def authrize_users():
+@auth_bp.route("/authorization", methods=["GET", "POST"])
+def authorize_users():
     pass
-

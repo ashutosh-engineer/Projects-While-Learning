@@ -22,7 +22,7 @@ def post() ->dict:
     content=data.get("content")
     category=data.get("category")
 
-    if id is None:
+    if new_id is None:
         return{"error" : "id not generated"}, 400
     if title is None:
         return {"error" : "title is Required"}, 400
@@ -35,7 +35,7 @@ def post() ->dict:
 
     # Append the post in the list
     new_post= {
-        "id" : id,
+        "id" : new_id,
         "title" : title,
         "content" : content,
         "category" : category
@@ -43,6 +43,42 @@ def post() ->dict:
 
     posts.append(new_post)
     return jsonify(new_post), 201
+
+@post_bp.route("/<int:post_id>" , methods=["PUT"])
+def change_content(post_id):
+    data=request.get_json(silent= True)
+    if not isinstance(data, dict):
+        return {"error" : "Invalid data object not Json"},400
+
+    
+    new_title : str=data.get("title")
+    new_content : str=data.get("content")
+    new_category : str=data.get("category")
+
+    # Validation
+    if new_title is None:
+        return {"error" : "title must be given"}, 400
+
+    if new_content is None:
+        return {"error" : "new Content must be Given"}, 400
+
+    if new_category is None:
+        return {"error": "Category must be Given"}, 400
+
+    # Now as per the id update the reminaing data in the feilds
+
+    for post in posts:
+        if post["id"] == post_id:
+            post["title"]=new_title
+            post["content"]=new_content
+            post["category"]=new_category
+
+            return jsonify(post), 200
+
+    return jsonify ({
+        "ok" : "Post ost not found",
+    }), 404
+
 
 
 
