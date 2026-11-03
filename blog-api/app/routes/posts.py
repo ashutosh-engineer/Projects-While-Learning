@@ -80,6 +80,28 @@ def change_content(post_id):
     }), 404
 
 
+@post_bp.route("/<int:post_id>", methods=["PATCH"])
+def change_partially(post_id):
+    data = request.get_json(silent=True)
+
+    if not isinstance(data, dict):
+        return {"error": "Valid JSON object is required"}, 400
+
+    if not data:
+        return {"error": "At least one field is required"}, 400
+
+    for post in posts:
+        if post["id"] == post_id:
+            post["title"] = data.get("title", post["title"])
+            post["content"] = data.get("content", post["content"])
+            post["category"] = data.get("category", post["category"])
+
+            return jsonify({
+                "message": "Post updated successfully",
+                "post": post
+            }), 200
+
+    return {"error": "Post not found"}, 404
 
 
 @post_bp.route("/" , methods=["GET"])
