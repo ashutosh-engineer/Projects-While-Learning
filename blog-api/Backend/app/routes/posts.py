@@ -200,6 +200,32 @@ def delete(post_id):
 
     return jsonify({"Error" : "Post not found"}), 404
 
+@post_bp.route("/form", methods=["POST"])
+def form_data():
+    new_id = len(posts)+1
+    title=request.form.get("title")
+    content=request.form.get("content")
+    category=request.form.get("category")
+
+    if title is None:
+        return jsonify({"error": "Title is required"}), 400
+
+    if content is None:
+        return jsonify({"error" : "content is required"}), 400
+
+    if category is None:
+        return jsonify({"error" : "category is Required"}), 400
+
+    new_post = {
+        "id" : new_id,
+        "title": title,
+        "content" : content,
+        "category" : category,
+    }
+
+    posts.append(new_post)
+    return jsonify(new_post), 201
+
 
 
 
