@@ -1,4 +1,6 @@
 from flask import Blueprint , jsonify , request
+from werkzeug.utils import secure_filename
+import os
 
 post_bp= Blueprint("posts" , __name__)
 
@@ -230,6 +232,7 @@ def form_data():
 
 @post_bp.route("/upload", methods=["POST"])
 def get_files():
+    upload_path=r"C:\Users\ashut\OneDrive\Desktop\Projects-While-Learning\blog-api\Backend\upload"
     title=request.form.get("title")
     content=request.form.get("content")
     category=request.form.get("category")
@@ -247,11 +250,13 @@ def get_files():
     if image is None or not image.filename:
         return jsonify({"error" : 'Image should be attached'}), 400
 
-    filename=image.filename
+    filename=secure_filename(image.filename)
+    filepath=os.path.join(upload_path, filename)
+    image.save(filepath)
     
     return jsonify({
         "message" : "File received",
         "filename" : filename,
         "title" : title
-    }) , 200
+    }) , 201
 
