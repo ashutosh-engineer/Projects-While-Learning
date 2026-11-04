@@ -228,7 +228,30 @@ def form_data():
 
 
 
+@post_bp.route("/upload", methods=["POST"])
+def get_files():
+    title=request.form.get("title")
+    content=request.form.get("content")
+    category=request.form.get("category")
+    image=request.files.get("image")
 
+    if title is None:
+        return jsonify({"error" : "title cant be empety"}), 404
+
+    if content is None:
+        return jsonify({"error" : "content cant be empety"}), 400
+
+    if category is None:
+        return jsonify({"error" : "Category cant be empety"}), 400
+
+    if image is None or not image.filename:
+        return jsonify({"error" : 'Image should be attached'}), 400
+
+    filename=image.filename
     
-
+    return jsonify({
+        "message" : "File received",
+        "filename" : filename,
+        "title" : title
+    }) , 200
 
