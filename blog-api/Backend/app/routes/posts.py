@@ -263,4 +263,4 @@ def get_files():
 
 @post_bp.route("/page", methods = ["GET"])
 def page():
-    return render_template("posts.html" , posts=posts)
+    return render_template("posts.html" , posts=posts, title="ALL Blog posts")

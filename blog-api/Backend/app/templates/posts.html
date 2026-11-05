@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Post Page</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
     <h1>All Blog Posts</h1>
 
     {% if posts %}
@@ -20,5 +17,4 @@
     {% else %}
         <p>No posts found</p>
     {% endif %}
-</body>
-</html>
+{% endblock %}
