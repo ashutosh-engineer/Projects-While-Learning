@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Page</title>
+</head>
+<body>
+    <h1>All Blog Posts</h1>
+
+    {% if posts %}
+        <p>Posts found</p>
+
+        {% for post in posts %}
+            <article>
+                <h2>{{ post.title }}</h2>
+                <p>{{ post.content }}</p>
+                <p>Category: {{ post.category }}</p>
+                <p>ID: {{ post.id }}</p>
+            </article>
+        {% endfor %}
+    {% else %}
+        <p>No posts found</p>
+    {% endif %}
+</body>
+</html>

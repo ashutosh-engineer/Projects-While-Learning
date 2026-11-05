@@ -1,6 +1,7 @@
 from flask import Blueprint , jsonify , request
 from werkzeug.utils import secure_filename
 import os
+from flask import render_template
 
 post_bp= Blueprint("posts" , __name__)
 
@@ -260,3 +261,6 @@ def get_files():
         "title" : title
     }) , 201
 
+@post_bp.route("/page", methods = ["GET"])
+def page():
+    return render_template("posts.html" , posts=posts)
