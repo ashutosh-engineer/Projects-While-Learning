@@ -1,8 +1,10 @@
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 
 class Config:
-    SECRET_KEY = os.getenv("SECRET_KEY", "development-only-key")
+    APP_NAME=os.getenv("APP_NAME" , "Blog-API")
+    SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 class DevelopmentConfig(Config):
