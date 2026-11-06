@@ -273,3 +273,10 @@ def test_error():
 post_bp.route("/abort-test")
 def abort_test():
     abort(404, description="THis is testing of abort")
+
+@post_bp.errorhandler(404)
+def does_not_exist(error):
+    return {
+        "error" : "Post not found",
+        "status" : 404
+    }, 404
