@@ -1,8 +1,10 @@
 from flask import Flask
+from config.config import  DevelopmentConfig
 
 
-def create_app(config_name = "Developement"):
+def create_app(config_class=DevelopmentConfig):
     app=Flask(__name__)
+    app.config.from_object(config_class)
     from routes.posts import post_bp
     from routes.auth import auth_bp
     from routes.comments import comments_bp
@@ -37,4 +39,4 @@ def create_app(config_name = "Developement"):
 
 if __name__ == "__main__":
     app=create_app()
-    app.run(debug = True)
+    app.run()
