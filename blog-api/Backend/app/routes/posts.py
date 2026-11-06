@@ -2,6 +2,7 @@ from flask import Blueprint , jsonify , request
 from werkzeug.utils import secure_filename
 import os
 from flask import render_template
+from flask import abort
 
 post_bp= Blueprint("posts" , __name__)
 
@@ -264,3 +265,11 @@ def get_files():
 @post_bp.route("/page", methods = ["GET"])
 def page():
     return render_template("posts.html" , posts=posts, title="ALL Blog posts")
+
+@post_bp.route("/test-error")
+def test_error():
+    raise RuntimeError("Testing Internl Server Error")
+
+post_bp.route("/abort-test")
+def abort_test():
+    abort(404, description="THis is testing of abort")

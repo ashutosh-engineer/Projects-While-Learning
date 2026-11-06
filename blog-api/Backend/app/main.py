@@ -25,6 +25,12 @@ def create_app(config_name = "Developement"):
             "status code" : 405
         }, 405
 
+    @app.errorhandler(500)
+    def handle_internal_server(error):
+        return {
+            "error" : "Internal server Error",
+            "status" : 500
+        }, 500
 
     return app
 
