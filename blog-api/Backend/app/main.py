@@ -11,6 +11,20 @@ def create_app(config_name = "Developement"):
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(comments_bp, url_prefix="/api/comments")
 
+    @app.errorhandler(404)
+    def does_not_exist(error):
+        return {
+            "error" : "Post not found",
+            "status" : 404
+        }, 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return {
+            "error" : "method not allowed",
+            "status code" : 405
+        }, 405
+
 
     return app
 
