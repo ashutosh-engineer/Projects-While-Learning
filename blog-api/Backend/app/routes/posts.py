@@ -3,6 +3,8 @@ from werkzeug.utils import secure_filename
 import os
 from flask import render_template , current_app , g
 from flask import abort, g
+from flask import session
+import uuid
 
 post_bp= Blueprint("posts" , __name__)
 
@@ -297,4 +299,23 @@ def request_id():
     return {
         "request_id": g.request_id,
         "message": "Data stored for this request"
+    }
+
+@post_bp.route("session/set")
+def set_session():
+    session["user_id"]= uuid.uuid4()
+    session["role"]="admin"
+    session["method_request"]= request.method
+
+
+    return {
+        "message" :"Session has been set"
+    }
+
+@post_bp.route("session/get")
+def get_seesion():
+    return {
+        "user_id" : session.get("user_id"),
+        "role" : session.get("role"),
+        "request_method" : session.get("method_request")
     }
