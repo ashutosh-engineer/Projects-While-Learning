@@ -37,6 +37,12 @@ def create_app(config_class=DevelopmentConfig):
             "status" : 500
         }, 500
 
+    
+    @app.teardown_request
+    def cleanup_request(exception):
+        if exception:
+            print(f"Request failed: {exception}")
+
     return app
 
 
