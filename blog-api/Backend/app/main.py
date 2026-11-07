@@ -1,5 +1,6 @@
-from flask import Flask, current_app
+from flask import Flask, current_app , g 
 from config.config import  DevelopmentConfig
+import uuid
 
 
 def create_app(config_class=DevelopmentConfig):
@@ -41,6 +42,12 @@ def create_app(config_class=DevelopmentConfig):
 
 if __name__ == "__main__":
     app=create_app()
-    # with app.app_context():
-    #     print(current_app.config["APP_NAME"])
+    @app.before_request
+    def give_request_id():
+        g.request_id= str(uuid.uuid4())
+    @app.after_request
+    def add_request_id_header(response):
+        response.headers["X-Request-ID"] =g.request_id
+        return response
+
     app.run()

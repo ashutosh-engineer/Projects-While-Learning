@@ -1,8 +1,8 @@
 from flask import Blueprint , jsonify , request
 from werkzeug.utils import secure_filename
 import os
-from flask import render_template
-from flask import abort
+from flask import render_template , current_app , g
+from flask import abort, g
 
 post_bp= Blueprint("posts" , __name__)
 
@@ -286,5 +286,15 @@ def request_info():
     return jsonify({
         "request_method" : request.method,
         "request_path" : request.path,
-        "user_agent" : request.user_agent.string
+        "user_agent" : request.user_agent.string,
+        "remote_adress" : request.remote_addr
     }),200
+
+
+@post_bp.route("/request-id")
+def request_id():
+
+    return {
+        "request_id": g.request_id,
+        "message": "Data stored for this request"
+    }
