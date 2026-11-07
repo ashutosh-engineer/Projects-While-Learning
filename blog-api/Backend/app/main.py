@@ -18,7 +18,7 @@ def create_app(config_class=DevelopmentConfig):
     @app.errorhandler(404)
     def does_not_exist(error):
         return {
-            "error" : "Post not found",
+            "error" : "Not found",
             "status" : 404
         }, 404
 
@@ -41,6 +41,6 @@ def create_app(config_class=DevelopmentConfig):
 
 if __name__ == "__main__":
     app=create_app()
-    with app.app_context():
-        print(current_app.config["APP_NAME"])
+    # with app.app_context():
+    #     print(current_app.config["APP_NAME"])
     app.run()

@@ -280,3 +280,11 @@ def does_not_exist(error):
         "error" : "Post not found",
         "status" : 404
     }, 404
+
+@post_bp.route("/Request-info")
+def request_info():
+    return jsonify({
+        "request_method" : request.method,
+        "request_path" : request.path,
+        "user_agent" : request.user_agent.string
+    }),200
