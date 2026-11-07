@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, current_app
 from config.config import  DevelopmentConfig
 
 
@@ -41,4 +41,6 @@ def create_app(config_class=DevelopmentConfig):
 
 if __name__ == "__main__":
     app=create_app()
+    with app.app_context():
+        print(current_app.config["APP_NAME"])
     app.run()
