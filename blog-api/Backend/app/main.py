@@ -12,8 +12,8 @@ def create_app(config_class=DevelopmentConfig):
     app.register_blueprint(post_bp, url_prefix= "/api/posts")
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(comments_bp, url_prefix="/api/comments")
-    print(app.config["SECRET_KEY"])
-    print(app.config["APP_NAME"])
+    # print(app.config["SECRET_KEY"])
+    # print(app.config["APP_NAME"])
 
     @app.errorhandler(404)
     def does_not_exist(error):
