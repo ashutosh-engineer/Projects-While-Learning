@@ -1,11 +1,22 @@
 from flask import Flask, current_app , g 
 from config.config import  DevelopmentConfig
 import uuid
+from flask_talisman import Talisman
 
 
 def create_app(config_class=DevelopmentConfig):
     app=Flask(__name__)
     app.config.from_object(config_class)
+    if app.config["DEBUG"]:
+        Talisman(
+            app,
+            force_https=False,
+            strict_transport_security=False
+        )
+    else:
+        Talisman(app)
+
+
     from routes.posts import post_bp
     from routes.auth import auth_bp
     from routes.comments import comments_bp
@@ -37,6 +48,14 @@ def create_app(config_class=DevelopmentConfig):
             "status" : 500
         }, 500
 
+    @app.before_request
+    def give_request_id():
+        g.request_id= str(uuid.uuid4())
+            
+    @app.after_request
+    def add_request_id_header(response):
+        response.headers["X-Request-ID"] =g.request_id
+        return response
     
     @app.teardown_request
     def cleanup_request(exception):
@@ -48,13 +67,5 @@ def create_app(config_class=DevelopmentConfig):
 
 if __name__ == "__main__":
     app=create_app()
-    @app.before_request
-    def give_request_id():
-        g.request_id= str(uuid.uuid4())
-        
-    @app.after_request
-    def add_request_id_header(response):
-        response.headers["X-Request-ID"] =g.request_id
-        return response
 
     app.run()
