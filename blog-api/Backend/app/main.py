@@ -2,10 +2,13 @@ from flask import Flask, current_app , g
 from config.config import  DevelopmentConfig
 import uuid
 from flask_talisman import Talisman
+from flask_limiter import Limiter
+from flask_limiter.utils import get_remote_address
 
 
 def create_app(config_class=DevelopmentConfig):
     app=Flask(__name__)
+    limiter = Limiter(key_func = get_remote_address, app=app, default_limits=["3 per minute"])
     app.config.from_object(config_class)
     if app.config["DEBUG"]:
         Talisman(
