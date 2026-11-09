@@ -24,7 +24,7 @@ def create_app(config_class=DevelopmentConfig):
     from routes.auth import auth_bp
     from routes.comments import comments_bp
 
-    app.register_blueprint(post_bp, url_prefix= "/api/posts")
+    app.register_blueprint(post_bp, url_prefix= "/api/posts", name="post_v1")
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(comments_bp, url_prefix="/api/comments")
     # print(app.config["SECRET_KEY"])
