@@ -11,8 +11,22 @@
 
 
 from fastapi import FastAPI , status
+from pydantic import BaseModel
 
 app=FastAPI()
+
+class Chatmessage(BaseModel):
+    sender: str
+    message: str
+    room_id:int 
+
+@app.post("/messages" , status_code=status.HTTP_200_OK)
+def messages(chat : Chatmessage):
+    return {
+        "sender" : chat.sender,
+        "message" : chat.message,
+        "room_id" : chat.room_id
+    }
 
 @app.get("/", status_code=status.HTTP_200_OK)
 def server_running():
