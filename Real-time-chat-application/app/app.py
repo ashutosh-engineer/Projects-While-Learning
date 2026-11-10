@@ -13,15 +13,22 @@
 from fastapi import FastAPI , status
 from pydantic import BaseModel
 from fastapi import Depends
+from fastapi import BackgroundTasks
 
 app=FastAPI()
+
+
 
 class Chatmessage(BaseModel):
     sender: str
     message: str
     room_id:int 
 
-def common_parameteres(page: int = 1, limit:int =10):
+def write_file_logs(message: str):
+    with open("logs.txt", "a", encoding="utf-8") as file:
+        file.write(f"{message}\n")
+
+def common_parameteres(page: int, limit:int):
     return {
         "page" : page,
         "limit":limit
@@ -36,8 +43,19 @@ def dependency_injection(parameteres : dict = Depends(common_parameteres)):
         "message" : "Dependency"
     }
 
-@app.post("/messages" , status_code=status.HTTP_200_OK , summary="Created an route for sending chat details")
-def messages(chat : Chatmessage):
+@app.post(
+    "/messages",
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a chat message"
+)
+def messages(
+    chat: Chatmessage,
+    background_tasks: BackgroundTasks
+):
+    background_tasks.add_task(
+        write_file_logs,
+        f"{chat.sender}: {chat.message}"
+    )
     return {
         "sender" : chat.sender,
         "message" : chat.message,
@@ -54,7 +72,6 @@ def health_status():
         "ok": True,
         "message" : "Healthy"
     }
-
 
 
 
