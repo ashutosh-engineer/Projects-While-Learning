@@ -12,6 +12,7 @@
 
 from fastapi import FastAPI , status
 from pydantic import BaseModel
+from fastapi import Depends
 
 app=FastAPI()
 
@@ -20,7 +21,22 @@ class Chatmessage(BaseModel):
     message: str
     room_id:int 
 
-@app.post("/messages" , status_code=status.HTTP_200_OK)
+def common_parameteres(page: int = 1, limit:int =10):
+    return {
+        "page" : page,
+        "limit":limit
+    }
+
+@app.get("/message" ,
+        status_code=status.HTTP_200_OK,
+        summary="For testing FastAPI dependency Injection")
+def dependency_injection(parameteres : dict = Depends(common_parameteres)):
+    return {
+        "paramteres" : parameteres,
+        "message" : "Dependency"
+    }
+
+@app.post("/messages" , status_code=status.HTTP_200_OK , summary="Created an route for sending chat details")
 def messages(chat : Chatmessage):
     return {
         "sender" : chat.sender,
