@@ -15,7 +15,9 @@ from fastapi import Depends
 from routers.messages import chat_router
 import time as t
 from fastapi import Request 
-from fastapi.responses import Response
+from fastapi.responses import Response , JSONResponse
+from fastapi import HTTPException
+from fastapi.exception_handlers import http_exception_handler
 
 app=FastAPI()
 
@@ -31,6 +33,28 @@ async def add_process_time_header(request : Request , call_next):
     response.headers["X-Process-Time"] = str(process_time)
 
     return response
+
+@app.get("/errors/not-found")
+def not_found():
+    raise HTTPException(
+        status_code=404,
+        detail= "Resource not Found"
+    )
+
+@app.exception_handlers(HTTPException)
+async def custom_http_exception_handler(
+    request: Request,
+    exc: HTTPException
+):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error": exc.detail,
+            "path": request.url.path
+        }
+    )
+
+
 
 
 def common_parameteres(page: int, limit:int):
